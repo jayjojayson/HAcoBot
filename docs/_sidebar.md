@@ -11,7 +11,7 @@
 * 🎙️ **Sprachsteuerung**
   * [Sprachsteuerung (Voice)](voice-setup.md)
 
-* 🧑‍💻 **Funktionen & Nutzung**
+* 🧑‍💻 **Funktionen**
   * [Funktionen & Nutzung](nutzung.md)
   * [To-Do & Kalender](todo-calendar.md)
   * [Dashboard Designer](dashboard.md)
