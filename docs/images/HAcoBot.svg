@@ -1,0 +1,42 @@
+<svg width="400" height="350" viewBox="0 0 400 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="350" fill="#111827"/>
+
+  <defs>
+    <filter id="blueGlow" x="50" y="0" width="300" height="300" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="25" result="effect1_foregroundBlur"/>
+    </filter>
+    <linearGradient id="haBlueGradient" x1="200" y1="50" x2="200" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#03a9f4"/>
+      <stop offset="1" stop-color="#0288d1"/>
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#blueGlow)">
+    <circle cx="200" cy="140" r="70" fill="#03a9f4" fill-opacity="0.4"/>
+  </g>
+
+  <g id="robot">
+    <rect x="150" y="80" width="100" height="120" rx="20" fill="url(#haBlueGradient)"/>
+    
+    <rect x="160" y="100" width="80" height="40" rx="10" fill="#111827"/>
+    
+    <circle cx="185" cy="120" r="8" fill="#03a9f4"/>
+    <circle cx="215" cy="120" r="8" fill="#03a9f4"/>
+    
+    <circle cx="130" cy="160" r="15" fill="url(#haBlueGradient)"/>
+    <path d="M125 145 L115 130 L110 135 L120 150 Z" fill="#0288d1"/> 
+    <path d="M135 175 L145 190 L140 195 L130 180 Z" fill="#0288d1"/> 
+    
+    <circle cx="270" cy="160" r="15" fill="url(#haBlueGradient)"/>
+    <g transform="translate(270, 130)">
+      <circle cx="0" cy="0" r="12" stroke="#03a9f4" stroke-width="4" fill="none"/>
+      <path d="M-15 0H-10 M10 0H15 M0 -15V-10 M0 10V15 M-10 -10L-7 -7 M7 7L10 10 M-10 10L-7 7 M7 -7L10 -10" stroke="#03a9f4" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <text x="200" y="285" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="900" fill="#03a9f4" text-anchor="middle" letter-spacing="-1">HAcoBot</text>
+  
+  <text x="200" y="285" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="900" stroke="#03a9f4" stroke-width="2" fill="none" text-anchor="middle" letter-spacing="-1" opacity="0.3" filter="url(#blueGlow)">HAcoBot</text>
+</svg>

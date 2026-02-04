@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+venv/
+env/
+
+.DS_Store
+.vscode/
+.idea/
+
+hacs.json.tmp
+
+# Dateien und Ordner, die beim upload ausgeschlossen werden sollen:
+/custom_components
+/Z-neue-version

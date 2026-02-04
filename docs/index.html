@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>HAcoBot Wiki</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Dokumentation für HAcoBot - Der KI Admin für Home Assistant">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Theme: Vue -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <!-- Dark/Light Theme Switcher -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css" title="docsify-darklight-theme" type="text/css" />
+
+  <style>    
+    body, .markdown-section, .sidebar-nav, .app-name { font-family: 'Inter', sans-serif !important; }
+    code, pre { font-family: 'Roboto Mono', monospace !important; }
+    .sidebar-nav { font-size: 16px !important; }
+    .app-name { font-size: 22px !important; font-weight: bold; color: #03a9f4 !important; }
+    .markdown-section p, .markdown-section ul, .markdown-section ol { font-size: 17px !important; line-height: 1.6; }
+    /* Custom Blue Accents */
+    .sidebar-nav li.active > a { border-right: 2px solid #03a9f4; color: #03a9f4; font-weight: bold; }
+    a { color: #03a9f4; text-decoration: none; }
+  </style>
+</head>
+<body>
+  
+  <div id="app">Lade HAcoBot Wiki...</div>
+
+  <script>
+    window.$docsify = {
+      name: '🤖 HAcoBot',
+      repo: 'jayjojayson/hacobot', // Passe dies an, falls dein Repo anders heißt
+      loadSidebar: true,
+      loadNavbar: true,
+      relativePath: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      
+      // Theme Konfiguration (Blau statt Grün)
+      darklightTheme: {
+        siteFont : "Inter",
+        defaultTheme : 'dark',
+        codeFontFamily : 'Roboto Mono, monospace',
+        bodyFontSize : '19px',
+        dark: {
+          accent: '#03a9f4', // HA Blau
+          toogleBackground : '#ffffff',
+          background: '#091a28',
+          textColor: '#b4b4b4',
+          codeTextColor : '#ffffff',
+          codeBackgroundColor : '#0e2233',
+          borderColor : '#0d2538',
+          blockQuoteColour : '#858585',
+          highlightColor : '#0288d1',
+          sidebarSublink : '#b4b4b4',
+          codeTypeColor : '#ffffff',
+          coverBackground : 'linear-gradient(to left bottom, hsl(200, 100%, 85%) 0%,hsl(220, 100%, 85%) 100%)',
+          toogleImage : 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+        },
+        light: {
+          accent: '#03a9f4', // HA Blau
+          toogleBackground : '#091a28',
+          background: '#ffffff',
+          textColor: '#34495e',
+          codeTextColor : '#525252',
+          codeBackgroundColor : '#f8f8f8',
+          borderColor : 'rgba(0, 0, 0, 0.07)',
+          blockQuoteColour : '#858585',
+          highlightColor : '#0288d1',
+          sidebarSublink : '#505d6b',
+          codeTypeColor : '#091a28',
+          coverBackground : 'linear-gradient(to left bottom, hsl(200, 100%, 85%) 0%,hsl(220, 100%, 85%) 100%)',
+          toogleImage : 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+        }
+      },
+      search: {
+        placeholder: 'Suche...',
+        noData: 'Keine Ergebnisse!',
+        depth: 6
+      },
+      copyCode: {
+        buttonText : 'Kopieren',
+        errorText  : 'Fehler',
+        successText: 'Kopiert'
+      }
+    }
+  </script>
+  
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"></script>
+</body>
+</html>
