@@ -124,18 +124,20 @@ HAcoBot:
   - weitere Home-Assistant-Entitäten
 - Kann Home Assistant neu starten (wenn Nutzer auffordert)
 
-## 🔍 Diagnose & Briefing
+## 🔍 Briefing
 
 ### Lagebericht
 Frage z. B.:
 
 > „Briefing?“
+> „Lagebericht?“
 > „Wie ist die Lage?“
 
 HAcoBot liefert eine Zusammenfassung aus:
 - Wetter
 - Updates
 - Systemstatus
+- Option ToDo List anzusehen
 
 ### Log-Analyse
 - Liest Fehler direkt aus der `home-assistant.log`
@@ -157,22 +159,3 @@ Steuere Geräte direkt per natürlicher Sprache:
   - Einträge hinzufügen
   - abhaken (erledigt)
   - löschen (entfernen)
-
-
-## 🔍 Proaktive Diagnose & Briefing
-
-Frage z. B. nach:
-
-- **„Lagebericht“**
-- **„Briefing“**
-- **„System Report“**
-
-HAcoBot analysiert dabei:
-
-- Wetter & Vorhersage (inkl. Attribute)
-- anstehende Updates
-- Fehlerlogs (`home-assistant.log`)
-- nicht verfügbare („tote“) Entitäten
-- leere oder kritische Batterien
-- versteckte Sensor-Attribute (z. B. Zellspannungen)
-
