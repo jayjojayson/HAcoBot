@@ -132,7 +132,7 @@ HAcoBot analyzes:
 ## 🧩 Feature Comparison – HAcoBot vs. Home Assistant Assist
 
 | Capability | Home Assistant Assist | HAcoBot |
-|------------|----------------------|-----------|
+| :--- | :---: | :---: |
 | Natural language device control | ✅ | ✅ |
 | Multi-step conversations | ⚠️ Limited | ✅ |
 | Short-term conversation memory | ⚠️ Basic | ✅ |
