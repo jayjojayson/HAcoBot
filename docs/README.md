@@ -1,4 +1,6 @@
-<img src="images/HAcoBot_1024.png" alt="HAcoBot" width="100%">
+<img src="images/HAcoBot_1024.png" alt="HAcoBot" width="50%">
+
+---
 
 # Willkommen bei HAcoBot 🤖
 
