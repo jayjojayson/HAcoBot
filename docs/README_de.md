@@ -1,0 +1,208 @@
+<img width="100%" height="auto" alt="HAcoBot" src="https://github.com/jayjojayson/HAcoBot/blob/main/docs/images/HAcoBot_1024.png" />
+
+# HAcoBot – Home Assistant Command Bot 🤖
+
+HAcoBot ist ein fortschrittlicher, **KI-gesteuerter Admin- & Command-Agent** für Home Assistant.  
+Er integriert sich nativ in die **Assist-Chat-Funktion** und ermöglicht es dir, dein Smart Home nicht nur zu steuern, sondern auch **zu administrieren, zu analysieren und weiterzuentwickeln**.
+
+Im Gegensatz zu klassischen Sprachassistenten besitzt HAcoBot:
+
+- Zugriff auf **System-Werkzeuge**
+- ein **Kurz- & Langzeitgedächtnis**
+- die Fähigkeit, **proaktiv mitzudenken**
+- eine **eigene Lovelace-Dashboard-Karte**
+
+HAcoBot ist damit kein Chatbot, sondern ein **echter Home-Assistant-Admin-Agent**.
+
+> ⚠️ **Status:** Alpha  
+> Die Kernfunktionen sind vorhanden. In einzelnen Situationen kann HAcoBot nachfragen oder Aktionen abbrechen.  
+> Wissen und Präferenzen können aber bereits dauerhaft gespeichert werden.
+
+---
+
+## ✨ Features
+
+### 🧠 Multi-LLM Support
+Wähle deinen bevorzugten KI-Anbieter:
+
+- **Google Gemini** (Empfohlen: `gemini-2.0-flash`)
+- **OpenAI ChatGPT** (`gpt-4o`)
+- **Groq** (High-Speed Inferenz)
+- **DeepSeek** (Coding Specialist)
+- **Ollama** (lokal, privat & kostenlos per eigener URL)
+
+
+### 💾 Langzeitgedächtnis & Lernen
+HAcoBot kann sich Informationen **über Gespräche hinweg merken**, z. B.:
+
+- „Mein Name ist Jan“
+- „Ich mag keine Updates am Sonntag“
+
+**Technisch:**
+- lokale Speicherung unter  
+  `/config/HAcoBot/hacobot_memory.json`  
+- vollständig **offline kontrollierbar**
+- jederzeit lösch- oder deaktivierbar
+
+
+### 🧠 Kurzzeitgedächtnis
+Merkt sich den aktuellen Gesprächskontext für:
+
+- mehrstufige Anweisungen
+- Rückfragen
+- natürliche Dialoge
+
+
+### 🛡️ Modulare Kontrolle (Feature-Switches)
+Du entscheidest **was HAcoBot darf**.  
+Jede Fähigkeit kann separat aktiviert oder deaktiviert werden:
+
+- **Updates & Wartung**  
+  Listet Updates und installiert sie **nur auf expliziten Befehl**
+- **System-Neustart**  
+  Kritische Funktion, extra abgesichert
+- **Live-Steuerung**  
+  Lichter, Schalter, Cover, Szenen, Scripts
+- **To-Do-Listen & Kalender**  
+  Erstellen, abhaken, löschen von Einträgen
+- **Dashboard Designer**  
+  Generiert vollständigen Lovelace-YAML
+- **HAcoBot denkt mit**  
+  Aktiviert Gedächtnis & proaktive Anomalie-Suche
+- **Diagnose & Briefing**  
+  System-, Wetter- & Log-Analyse
+
+
+### ⚙️ Automation & Blueprint Manager
+- Erstelle komplexe Automatisierungen per Chat
+- Generiere vollständige **Blueprints mit Inputs & Selectors**
+- Lösche veraltete oder fehlerhafte Automationen
+- Zeige Übersichten deiner Automationen & Blueprints an
+
+
+### 🎨 Dashboard Designer
+Sag einfach:
+
+> „Erstelle eine Karte für mein Wohnzimmer mit Licht und Temperatur“
+
+HAcoBot generiert den **kompletten YAML-Code**:
+
+- Vertical / Horizontal Stacks
+- Tile Cards
+- Custom Cards (z. B. `mini-graph-card`, `sun-position-card`)
+- intelligente Struktur & Entity-Auswahl
+
+📁 Speicherung unter:  
+`/config/HAcoBot/Dashboard-Cards/`
+
+
+### 📡 Live-Steuerung
+Steuere Geräte direkt per natürlicher Sprache:
+
+- `light.turn_on`
+- `cover.set_position`
+- Schalter, Szenen, Scripts u. v. m.
+
+
+### 📅 Kalender & To-Do-Power-User
+- Termine lesen & gezielt löschen
+- To-Do-Listen:
+  - Einträge hinzufügen
+  - abhaken (erledigt)
+  - löschen (entfernen)
+
+
+### 🔍 Proaktive Diagnose & Briefing
+Frage z. B. nach:
+
+- **„Lagebericht“**
+- **„Briefing“**
+- **„System Report“**
+
+HAcoBot analysiert dabei:
+
+- Wetter & Vorhersage (inkl. Attribute)
+- anstehende Updates
+- Fehlerlogs (`home-assistant.log`)
+- nicht verfügbare („tote“) Entitäten
+- leere oder kritische Batterien
+- versteckte Sensor-Attribute (z. B. Zellspannungen)
+
+---
+
+## 🧩 Feature Comparison – HAcoBot vs. Home Assistant Assist
+
+| Capability | Home Assistant Assist | HAcoBot |
+|------------|----------------------|-----------|
+| Natural language device control | ✅ | ✅ |
+| Multi-step conversations | ⚠️ Limited | ✅ |
+| Short-term conversation memory | ⚠️ Basic | ✅ |
+| Long-term memory across chats | ❌ | ✅ |
+| Multi-LLM provider support | ⚠️ Limited | ✅ |
+| Local LLM support (Ollama) | ⚠️ Partial | ✅ |
+| Automation creation via chat | ❌ | ✅ |
+| Blueprint generation | ❌ | ✅ |
+| Automation analysis & debugging | ❌ | ✅ |
+| Dashboard YAML generation | ❌ | ✅ |
+| Custom card awareness | ❌ | ✅ |
+| Proactive anomaly detection | ❌ | ✅ |
+| System diagnostics & reports | ⚠️ Basic | ✅ |
+| Log file analysis | ❌ | ✅ |
+| Dead entity detection | ❌ | ✅ |
+| Battery health analysis | ❌ | ✅ |
+| Update overview | ⚠️ Basic | ✅ |
+| Install updates via chat | ❌ | ✅ |
+| Backup management | ❌ | ✅ |
+| Calendar management | ⚠️ Basic | ✅ |
+| To-Do list management | ⚠️ Basic | ✅ |
+| Feature permission switches | ❌ | ✅ |
+| Custom dashboard chat card | ❌ | ✅ |
+| Voice assistant support | ✅ | ✅ |
+| ReAct reasoning loop | ❌ | ✅ |
+| Admin-level system interaction | ❌ | ✅ |
+
+✅ Fully supported  
+⚠️ Limited / basic implementation  
+❌ Not supported
+
+
+---
+
+## 🚀 Installation
+
+### Manuell
+
+1. Repository herunterladen  
+2. Ordner  
+   `custom_components/hacobot`  
+   nach  
+   `/config/custom_components/`  
+   kopieren
+3. Home Assistant neu starten
+
+---
+
+## ⚙️ Konfiguration (Backend)
+
+1. **Einstellungen → Geräte & Dienste → Integration hinzufügen**
+2. **HAcoBot** auswählen
+3. KI-Anbieter wählen (z. B. Google Gemini)
+4. API-Key eintragen  
+   *(bei Ollama: beliebig, aber nicht leer)*
+5. *(Optional)* Modell auswählen
+6. *(Ollama)* lokale URL angeben  
+   z. B. `http://192.168.1.10:11434/v1`
+
+---
+
+## 🖥️ Dashboard-Karte (Frontend)
+
+HAcoBot bringt eine eigene **Chat-Karte** mit 🎉
+
+1. Browser-Cache leeren (`STRG + F5`)
+2. Dashboard → **Karte hinzufügen**
+3. **HAcoBot Chat** auswählen  
+   oder manuell:
+
+```yaml
+type: custom:hacobot-card
