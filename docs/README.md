@@ -1,4 +1,4 @@
-<img width="100%" height="auto" alt="HAcoBot" src="https://github.com/jayjojayson/HAcoBot/blob/main/docs/images/HAcoBot_1024.png" />
+<img src="images/HAcoBot_1024.png" alt="HAcoBot" width="100%">
 
 # Willkommen bei HAcoBot 🤖
 
