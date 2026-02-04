@@ -5,7 +5,7 @@
   * [Features](features.md)
 
 * 🚀 **Erste Schritte**
-  * [Installation](installation.md)
+  * [Installation](înstallation.md)
   * [Konfiguration & KI](konfiguration.md)
 
 * 🎙️ **Sprachsteuerung**
@@ -13,7 +13,6 @@
 
 * 🧑‍💻 **Funktionen & Nutzung**
   * [Funktionen & Nutzung](nutzung.md)
-  * [Verwendung im Chat](nutzung.md)
   * [To-Do & Kalender](todo-calendar.md)
   * [Dashboard Designer](dashboard.md)
   * [Diagnose & Briefing](diagnose.md)
