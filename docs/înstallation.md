@@ -26,4 +26,3 @@ Da HAcoBot eine eigene Dashboard-Karte mitbringt, **musst du nach dem Neustart z
 
 > **Hinweis:**  
 > Wenn die Integration nicht in der Liste erscheint, leere den Browser-Cache erneut und lade die Seite neu.
-

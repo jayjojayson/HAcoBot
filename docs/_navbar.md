@@ -3,10 +3,10 @@
 * 🏠 Home
   * [Overview](README.md)
   * [Installation](installation.md)
-  * [Configuration](configuration.md)
+  * [Configuration](konfiguration.md)
 
 * 🎤 Voice & Usage
-  * [Voice Guide](voice.md)
+  * [Voice Guide](voice-setup.md)
 
 * 🔗 Links
   * [GitHub Repository](https://github.com/jayjojayson/HAcoBot)
