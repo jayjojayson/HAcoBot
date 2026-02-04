@@ -9,14 +9,15 @@ Der Bot speichert Fakten in einer JSON-Datei in deinem Konfigurationsordner: `/c
 
 Diese Datei ist:
 - für dich **lesbar**
-- **editierbar**
+- **editierbar** (im FileExplorer)
 - dauerhaft gespeichert
 
 ## Was wird gespeichert?
 
 ### User-Fakten
-- Dein Name
+- Dein Name, wenn du HAcoBot aufforderst
 - Persönliche Vorlieben  
+  z. B. „Ich mag keine Benachrichtigung zum Briefing in der Seitenleiste (HA)“
   z. B. „Ich mag keine Updates am Wochenende“
 
 ### System-Notizen
