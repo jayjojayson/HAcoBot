@@ -1,29 +1,25 @@
-# Einführung
+<!-- docs/_sidebar.md -->
 
-## Überblick
+* 🏠 **Überblick**
+  * [Überblick](README.md)
+  * [Features](features.md)
 
-## Features
+* 🚀 **Erste Schritte**
+  * [Erste Schritte](erste-schritte.md)
+  * [Installation](installation.md)
+  * [Konfiguration & KI](konfiguration-ki.md)
 
-## Erste Schritte
+* 🎙️ **Sprachsteuerung**
+  * [Sprachsteuerung (Voice)](voice.md)
 
-## Installation
+* 🧑‍💻 **Funktionen & Nutzung**
+  * [Funktionen & Nutzung](funktionen-nutzung.md)
+  * [Verwendung im Chat](chat.md)
+  * [To-Do & Kalender](todo-kalender.md)
+  * [Dashboard Designer](dashboard-designer.md)
+  * [Diagnose & Briefing](diagnose-briefing.md)
 
-## Konfiguration & KI
-
-## Sprachsteuerung (Voice)
-
-## Funktionen & Nutzung
-
-## Verwendung im Chat
-
-## To-Do & Kalender
-
-## Dashboard Designer
-
-## Diagnose & Briefing
-
-## Hintergrund
-
-## Langzeitgedächtnis
-
-## Feature Switches
+* 🧠 **Hintergrund**
+  * [Hintergrund](hintergrund.md)
+  * [Langzeitgedächtnis](langzeitgedaechtnis.md)
+  * [Feature Switches](feature-switches.md)
