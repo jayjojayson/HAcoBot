@@ -50,8 +50,8 @@ Verbinde den Bot mit der KI deiner Wahl:
 ## 💾 Langzeitgedächtnis & Lernen
 HAcoBot kann sich Informationen **über Gespräche hinweg merken**, z. B.:
 
-- „Mein Name ist Jan“
-- „Ich mag keine Updates am Sonntag“
+- „Mein Name ist Jan, bitte speichern“
+- „Ich mag keine Updates am Sonntag, bitte merken“
 
 **Technisch:**
 - lokale Speicherung unter  
@@ -107,6 +107,15 @@ HAcoBot:
 - Lösche veraltete oder fehlerhafte Automationen
 - Zeige Übersichten deiner Automationen & Blueprints an
 
+## 📡 Live-Steuerung
+
+Steuere Geräte direkt per natürlicher Sprache:
+
+- `light.turn_on`
+- `cover.set_position`
+- Schalter, Szenen, Scripts weitere Home-Assistant-Entitäten
+
+Kann Home Assistant neu starten (wenn Nutzer auffordert)!
 
 ## 📝 To-Do & Kalender
 
@@ -114,15 +123,6 @@ HAcoBot:
   (Hinzufügen, Streichen, Löschen)
 - Prüft deinen Kalender
 - Kann Termine löschen oder anpassen
-
-## 📡 Live Steuerung
-
-- Steuert Geräte wie:
-  - `light`
-  - `switch`
-  - `cover`
-  - weitere Home-Assistant-Entitäten
-- Kann Home Assistant neu starten (wenn Nutzer auffordert)
 
 ## 🔍 Briefing
 
@@ -142,14 +142,6 @@ HAcoBot liefert eine Zusammenfassung aus:
 ### Log-Analyse
 - Liest Fehler direkt aus der `home-assistant.log`
 - Erkennt wiederkehrende oder kritische Probleme
-
-## 📡 Live-Steuerung
-
-Steuere Geräte direkt per natürlicher Sprache:
-
-- `light.turn_on`
-- `cover.set_position`
-- Schalter, Szenen, Scripts u. v. m.
 
 
 ## 📅 Kalender & To-Do-Power-User
