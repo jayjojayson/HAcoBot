@@ -3,20 +3,20 @@
 * 🏠 **Überblick**
   * [Überblick](README.md)
   * [Features](features.md)
+  * [Feature Switches](switches.md)
 
 * 🚀 **Erste Schritte**
   * [Installation](înstallation.md)
   * [Konfiguration & KI](konfiguration.md)
 
+* 🧑‍💻 **Funktionen**
+  * [Funktionen & Nutzung](nutzung.md)
+  * [Dashboard Designer](dashboard.md)
+  * [Diagnose & Briefing](diagnose.md)
+  * [To-Do & Kalender](todo-calendar.md)
+
 * 🎙️ **Sprachsteuerung**
   * [Sprachsteuerung (Voice)](voice-setup.md)
 
-* 🧑‍💻 **Funktionen**
-  * [Funktionen & Nutzung](nutzung.md)
-  * [To-Do & Kalender](todo-calendar.md)
-  * [Dashboard Designer](dashboard.md)
-  * [Diagnose & Briefing](diagnose.md)
-
 * 🧠 **Hintergrund**
   * [Langzeitgedächtnis](memory.md)
-  * [Feature Switches](switches.md)
