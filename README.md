@@ -205,13 +205,14 @@ HAcoBot analyzes:
 
 ### HACS  
 
-1. simply follow the Link to integrate this repository to HACS
+1. simply follow the Link to integrate this repository to HACS  
  [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=jayjojayson&repository=hass-victron-vrm-api&category=integration)
-2. go to `Settings -> Devices and Services -> Integration`
-3. click on `Add Integration`
-4. search for `HAcoBot`
-5. install the integration
-6. restart Home Assistant 
+
+3. go to `Settings -> Devices and Services -> Integration`
+4. click on `Add Integration`
+5. search for `HAcoBot`
+6. install the integration
+7. restart Home Assistant 
 
 ### Manual via HACS (not recommended)
 
