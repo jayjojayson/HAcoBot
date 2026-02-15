@@ -1,0 +1,54 @@
+name: Process Prompt Issue
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  process_prompt:
+    if: contains(github.event.issue.labels.*.name, 'new-prompt')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install black
+
+      - name: Process Issue
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: python scripts/process_issue_prompt.py
+
+      - name: Auto-Format (Black)
+        run: black custom_components/prompts.py
+
+      - name: Verify Syntax
+        run: python scripts/validate_prompts.py
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "✨ New Prompt: ${{ github.event.issue.title }}"
+          title: "✨ Prompt: ${{ github.event.issue.title }}"
+          body: |
+            This PR adds a new prompt rule based on Issue #${{ github.event.issue.number }}.
+            
+            **Function**: Auto-detected
+            **Source Issue**: #${{ github.event.issue.number }}
+            
+            Please review the changes in `custom_components/prompts.py`.
+          branch: "prompt-update-${{ github.event.issue.number }}"
+          delete-branch: true
+          labels: "automated-pr"

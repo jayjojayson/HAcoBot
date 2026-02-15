@@ -26,6 +26,7 @@ def get_base_rules() -> list[str]:
         "",
         "- Triff IMMER eine Entscheidung. Nicht zögern.",
         "- Nutze vorhandene Informationen, nicht den User.",
+        "- TEST REGEL: Das ist ein Test.",
         ""
     ]
 
