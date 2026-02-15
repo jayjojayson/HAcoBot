@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Debug Labels
-        run: echo "Labels: ${{ toJSON(github.event.issue.labels) }}"
+        run: echo "Labels ${{ toJSON(github.event.issue.labels) }}"
       
       - name: Check for Label
         id: check_label
