@@ -4,6 +4,10 @@ on:
   issues:
     types: [opened, edited, labeled]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
 jobs:
   process_prompt:
     runs-on: ubuntu-latest
@@ -99,4 +103,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh issue comment ${{ github.event.issue.number }} --body "⚠️ **Processing finished but no PR was created.**\n\nPossible reasons:\n- No changes detected in `prompts.py`.\n- A PR already exists for this issue.\n\nPlease check the Action logs."
+      - name: Close Issue on Success
+        if: steps.check_label.outputs.match == 'true' && steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue close ${{ github.event.issue.number }} --comment "🔒 **Closing issue automatically** as a Pull Request has been created."
