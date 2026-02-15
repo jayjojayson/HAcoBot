@@ -2,7 +2,7 @@ name: Process Prompt Issue
 
 on:
   issues:
-    types: [opened, edited]
+    types: [opened, edited, labeled]
 
 jobs:
   process_prompt:

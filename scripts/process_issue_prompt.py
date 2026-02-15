@@ -21,10 +21,13 @@ def parse_issue_body(body):
         content = content.strip()
         
         # Map headers to internal keys based on the issue template
-        if "Betroffene Funktion" in header:
+        # Support both German and English templates
+        if "Betroffene Funktion" in header or "Affected Function" in header:
             # Extract function name (e.g., "get_base_rules (Basis-Regeln)" -> "get_base_rules")
-            data["function"] = content.split(" ")[0].strip()
-        elif "Der neue Code/Text" in header:
+            # Also handle potential markdown bolding like "**get_base_rules**"
+            clean_content = content.replace("*", "").strip()
+            data["function"] = clean_content.split(" ")[0].strip()
+        elif "Der neue Code/Text" in header or "The new Code/Text" in header:
             data["content"] = content
             
     return data
