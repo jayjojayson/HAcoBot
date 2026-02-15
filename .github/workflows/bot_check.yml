@@ -1,0 +1,39 @@
+name: HAcoBot Architect Check
+
+on:
+  pull_request:
+    paths:
+      - 'custom_components/prompts.py'
+  push:
+    branches: [ main ]
+    paths:
+      - 'custom_components/prompts.py'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Abhängigkeiten
+        run: pip install black PyYAML
+
+      - name: Auto-Formatierung (Black)
+        run: black custom_components/prompts.py
+
+      - name: Änderungen committen
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🎨 HAcoBot: Prompts automatisch formatiert"
+          file_pattern: 'custom_components/prompts.py'
+
+      - name: Syntax-Validierung
+        run: python scripts/validate_prompts.py
+        

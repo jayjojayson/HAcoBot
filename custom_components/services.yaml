@@ -1,0 +1,12 @@
+process_prompt:
+  name: HAcoBot Prompt
+  description: Sendet einen Text-Befehl an den HAcoBot KI-Agenten zur Verarbeitung.
+  fields:
+    prompt:
+      name: Prompt
+      description: Der Textbefehl oder die Frage an den Bot.
+      required: true
+      example: "Schalte das Licht im Wohnzimmer an"
+      selector:
+        text:
+        

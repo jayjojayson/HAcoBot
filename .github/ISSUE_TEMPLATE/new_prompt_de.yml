@@ -1,0 +1,44 @@
+name: "🚀 HAcoBot Prompt Vorschlag (DE)"
+description: Schlage eine Änderung für eine spezifische Prompt-Funktion vor.
+labels: ["new-prompt", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Neuer Prompt-Vorschlag
+        Bitte wähle die betroffene Funktion aus und beschreibe die Änderung.
+  - type: dropdown
+    id: target_function
+    attributes:
+      label: Betroffene Funktion / Bereich
+      description: In welche Python-Funktion soll dieser Prompt integriert werden?
+      options:
+        - get_base_rules (Basis-Regeln)
+        - get_working_mode (Arbeitsweise)
+        - get_intent_priority (Prioritäten)
+        - get_response_format (Antwortstil)
+        - get_proactive_prompt (Proaktiv & Gedächtnis)
+        - get_info_prompt (Info & Diagnose)
+        - get_dashboard_prompt (Dashboard Design)
+        - get_automation_prompt (Automationen)
+        - get_todo_prompt (To-Do Listen)
+        - get_tool_definitions (Neue Tool-Logik)
+        - SONSTIGES (Bitte unten angeben)
+    validations:
+      required: true
+  - type: textarea
+    id: change_description
+    attributes:
+      label: Was soll geändert/hinzugefügt werden?
+      placeholder: "z.B. Neue Regel für Solar-Speicher Management hinzufügen..."
+    validations:
+      required: true
+  - type: textarea
+    id: prompt_content
+    attributes:
+      label: Der neue Code/Text
+      description: Kopiere hier den Text hinein, der in die Liste aufgenommen werden soll.
+      placeholder: "- Erkenne wenn der Solar-Akku leer ist und warne den User."
+    validations:
+      required: true
+      

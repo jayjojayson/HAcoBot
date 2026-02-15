@@ -1,0 +1,43 @@
+name: "🚀 HAcoBot Prompt Suggestion (EN)"
+description: Suggest a change for a specific prompt function.
+labels: ["new-prompt", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### New Prompt Suggestion
+        Please select the affected function and describe the change.
+  - type: dropdown
+    id: target_function
+    attributes:
+      label: Affected Function / Area
+      description: In which Python function should this prompt be integrated?
+      options:
+        - get_base_rules (Base Rules)
+        - get_working_mode (Working Mode)
+        - get_intent_priority (Priorities)
+        - get_response_format (Response Style)
+        - get_proactive_prompt (Proactive & Memory)
+        - get_info_prompt (Info & Diagnosis)
+        - get_dashboard_prompt (Dashboard Design)
+        - get_automation_prompt (Automations)
+        - get_todo_prompt (To-Do Lists)
+        - get_tool_definitions (New Tool Logic)
+        - OTHER (Please specify below)
+    validations:
+      required: true
+  - type: textarea
+    id: change_description
+    attributes:
+      label: What should be changed/added?
+      placeholder: "e.g. Add new rule for solar storage management..."
+    validations:
+      required: true
+  - type: textarea
+    id: prompt_content
+    attributes:
+      label: The new Code/Text
+      description: Copy the text here that should be added to the list.
+      placeholder: "- Detect when solar battery is empty and warn the user."
+    validations:
+      required: true

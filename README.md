@@ -14,7 +14,7 @@ Unlike traditional voice assistants, HAcoBot features:
 
 HAcoBot is not just a chatbot — it is a **true Home Assistant admin agent**.
 
-> ⚠️ **Status:** Alpha  
+> ⚠️ **Status:** Beta  
 > Core functionality is available. In some cases HAcoBot may ask follow-up questions or abort actions.  
 > Knowledge and preferences can already be stored persistently.
 
@@ -29,6 +29,7 @@ Choose your preferred AI provider:
 - **OpenAI ChatGPT** (`gpt-4o`)
 - **Groq** (High-speed inference)
 - **DeepSeek** (Coding specialist)
+- **OpenRouter** (Access to many models with one key)
 - **Ollama** (Local, private & free via custom URL)
 
 
@@ -67,6 +68,12 @@ Each capability can be enabled or disabled individually:
   Create, modify, delete entries
 - **Dashboard Designer**  
   Generates complete Lovelace YAML
+- **Script Manager**  
+  Create and manage Home Assistant scripts
+- **Scene Manager**  
+  Create and manage scenes
+- **Notifications & Alerts**  
+  Send notifications and receive proactive warnings
 - **HAcoBot Thinks Ahead**  
   Enables memory & proactive anomaly detection
 - **Diagnostics & Briefing**  
@@ -111,6 +118,28 @@ Control your devices using natural language:
   - Mark as done
   - Permanently remove entries
 
+
+### 📜 Script Manager
+- Create Home Assistant scripts via chat or voice
+- Action sequences without triggers (e.g., "Good Night Routine")
+- Delete individual scripts or all scripts (with confirmation)
+
+
+### 🎬 Scene Manager
+- Create scenes (snapshots of entity states)
+- Examples: Cinema Mode, Relaxing, Working
+- Activate scenes via voice or automation
+
+
+### 🔔 Notifications & Alerts
+- Send notifications to mobile apps or persistent notifications
+- Proactive warnings:
+  - Critical batteries (< 20%)
+  - Open windows/doors when user leaves home
+  - Faulty automations
+  - Critical system problems
+
+
 ### 🔍 Proactive Diagnostics & Briefing
 Ask things like:
 
@@ -154,6 +183,10 @@ HAcoBot analyzes:
 | Backup management | ❌ | ✅ |
 | Calendar management | ⚠️ Basic | ✅ |
 | To-Do list management | ⚠️ Basic | ✅ |
+| Script creation & management | ❌ | ✅ |
+| Scene creation & management | ❌ | ✅ |
+| Notification management | ❌ | ✅ |
+| Security monitoring (open doors/windows) | ❌ | ✅ |
 | Feature permission switches | ❌ | ✅ |
 | Custom dashboard chat card | ❌ | ✅ |
 | Voice assistant support | ✅ | ✅ |
@@ -170,14 +203,36 @@ HAcoBot analyzes:
 
 ## 🚀 Installation
 
-### Manual
+### HACS  
 
-1. Download the repository  
-2. Copy the folder  
+1. simply follow the Link to integrate this repository to HACS
+ [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=jayjojayson&repository=hass-victron-vrm-api&category=integration)
+2. go to `Settings -> Devices and Services -> Integration`
+3. click on `Add Integration`
+4. search for `HAcoBot`
+5. install the integration
+6. restart Home Assistant 
+
+### Manual via HACS (not recommended)
+
+1. install the HACS integration in Home Assistant
+2. go to **HACS → Integrations → Custom repositories**
+3. add the repository URL: `https://github.com/jayjojayson/HAcoBot`
+4. install the integration
+
+### Manual (not recommended)
+
+1. download the repository  
+2. copy the folder  
    `custom_components/hacobot`  
    to  
    `/config/custom_components/`
-3. Restart Home Assistant
+3. restart Home Assistant
+4. go to `Settings -> Devices and Services -> Integration`
+5. click on `Add Integration`
+6. search for `HAcoBot`
+7. install the integration
+8. restart Home Assistant 
 
 ---
 

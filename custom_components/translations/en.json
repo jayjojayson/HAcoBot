@@ -1,0 +1,34 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Configure HAcoBot",
+                "description": "Connect your AI Agent.",
+                "data": {
+                    "provider": "AI Provider",
+                    "api_key": "API Key (Optional for Ollama)",
+                    "model": "Model Name",
+                    "url": "Ollama Server URL (Only for Ollama)"
+                }
+            },
+            "reconfigure": {
+                "title": "Reconfigure HAcoBot",
+                "description": "Update your credentials.",
+                "data": {
+                    "provider": "AI Provider",
+                    "api_key": "API Key",
+                    "model": "Model Name",
+                    "url": "Ollama Server URL"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Failed to connect",
+            "invalid_auth": "Invalid authentication",
+            "unknown": "Unexpected error"
+        },
+        "abort": {
+            "already_configured": "Service is already configured"
+        }
+    }
+}

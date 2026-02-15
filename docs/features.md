@@ -27,6 +27,10 @@ HAcoBot ist modular aufgebaut. Du kannst viele dieser Funktionen über Schalter 
 | Backup management | ❌ | ✅ |
 | Calendar management | ⚠️ Basic | ✅ |
 | To-Do list management | ⚠️ Basic | ✅ |
+| Script creation & management | ❌ | ✅ |
+| Scene creation & management | ❌ | ✅ |
+| Notification management | ❌ | ✅ |
+| Security monitoring | ❌ | ✅ |
 | Feature permission switches | ❌ | ✅ |
 | Custom dashboard chat card | ❌ | ✅ |
 | Voice assistant support | ✅ | ✅ |
@@ -50,8 +54,8 @@ Verbinde den Bot mit der KI deiner Wahl:
 ## 💾 Langzeitgedächtnis & Lernen
 HAcoBot kann sich Informationen **über Gespräche hinweg merken**, z. B.:
 
-- „Mein Name ist Jan, bitte speichern“
-- „Ich mag keine Updates am Sonntag, bitte merken“
+- „Mein Name ist Jan, bitte speichern"
+- „Ich mag keine Updates am Sonntag, bitte merken"
 
 **Technisch:**
 - lokale Speicherung unter  
@@ -91,7 +95,7 @@ Jede Fähigkeit kann separat aktiviert oder deaktiviert werden:
 
 Erstelle Dashboards per Sprache oder Chat, zum Beispiel:
 
-> „Erstelle eine Karte für mein Wohnzimmer mit Licht und Temperatur“
+> „Erstelle eine Karte für mein Wohnzimmer mit Licht und Temperatur"
 
 HAcoBot:
 - generiert validen YAML-Code
@@ -129,9 +133,9 @@ Kann Home Assistant neu starten (wenn Nutzer auffordert)!
 ### Lagebericht
 Frage z. B.:
 
-> „Briefing?“
-> „Lagebericht?“
-> „Wie ist die Lage?“
+> „Briefing?"
+> „Lagebericht?"
+> „Wie ist die Lage?"
 
 HAcoBot liefert eine Zusammenfassung aus:
 - Wetter
@@ -151,3 +155,44 @@ HAcoBot liefert eine Zusammenfassung aus:
   - Einträge hinzufügen
   - abhaken (erledigt)
   - löschen (entfernen)
+
+
+## 📜 Script Manager
+
+Erstelle Home Assistant Scripts per Chat oder Sprache:
+
+- **Was sind Scripts?** Action-Sequenzen ohne Trigger (z.B. "Gute Nacht Routine")
+- **Erstellen:** "Erstelle ein Script für Filmabend"
+- **Löschen:** Einzelne Scripts oder alle (mit Bestätigung)
+- **Verwendung:** Dashboard, Sprache, Automationen
+
+Mehr Details: [Scripts Manager](scripts.md)
+
+
+## 🎬 Scene Manager
+
+Erstelle Scenes (Snapshots von Entity-Zuständen):
+
+- **Was sind Scenes?** Gespeicherte Zustände von Lichtern, Switches, etc.
+- **Erstellen:** "Erstelle eine Scene für Kino-Modus"
+- **Aktivieren:** "Aktiviere Scene Entspannen"
+- **Beispiele:** Kino-Modus, Romantic, Arbeiten, Entspannen
+
+Mehr Details: [Scenes Manager](scenes.md)
+
+
+## 🔔 Benachrichtigungen & Alerts
+
+Sende Benachrichtigungen oder erhalte proaktive Warnungen:
+
+- **Mobile App** Push-Benachrichtigungen an dein Smartphone
+- **Persistent Notifications** Warnungen im Home Assistant Frontend
+- **Proaktive Warnungen:**
+  - Kritische Batterien (< 20%)
+  - Offene Fenster/Türen wenn User das Haus verlässt
+  - Fehlerhafte Automationen
+  - Gravierende Systemprobleme
+
+**Beispiel:** "Sende mir eine Benachrichtigung: Wäsche aufhängen"
+
+Mehr Details: [Benachrichtigungen](notifications.md)
