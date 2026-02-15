@@ -2,7 +2,7 @@
 
 ---
 
-# Willkommen bei HAcoBot 🤖
+# HAcoBot 🤖 begrüßt dich
 
 HAcoBot (Home Assistant Command Bot) ist ein fortschrittlicher, KI-gesteuerter Admin-Agent für Home Assistant.
 
