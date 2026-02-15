@@ -24,6 +24,7 @@ jobs:
             echo "Label found!"
           else
             echo "match=false" >> $GITHUB_OUTPUT
+            echo "::warning title=Skipping Workflow::Label 'new-prompt' not found on this issue. Automation requires this label."
             echo "Label 'new-prompt' not found. Skipping."
           fi
 
