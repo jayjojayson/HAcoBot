@@ -3,8 +3,15 @@ import sys
 import re
 import json
 
+# Force UTF-8 for stdout/stderr to avoid encoding errors in some environments
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
+
 def parse_issue_body(body):
     """Parses the issue body from the GitHub Issue Form."""
+    print(f"[DEBUG] Raw Body Length: {len(body)}")
+    # print(f"[DEBUG] Raw Body Content:\n{body}") # Uncomment if needed, but be careful with length
+    
     data = {}
     
     # Simple parsing logic for the issue form format
@@ -15,6 +22,7 @@ def parse_issue_body(body):
     # Matches ### Header \n Content
     pattern = r"###\s+(.*?)\s*\n\s*(.*?)(?=\n###|$)"
     matches = re.findall(pattern, body, re.DOTALL)
+    print(f"[DEBUG] Found {len(matches)} sections via regex.")
     
     for header, content in matches:
         header = header.strip()

@@ -81,15 +81,21 @@ jobs:
           delete-branch: true
           labels: "automated-pr"
 
+      - name: Debug PR Output
+        if: steps.check_label.outputs.match == 'true'
+        run: |
+          echo "PR Number: [${{ steps.cpr.outputs.pull-request-number }}]"
+          echo "PR URL: [${{ steps.cpr.outputs.pull-request-url }}]"
+
       - name: Comment on Issue
-        if: steps.check_label.outputs.match == 'true' && steps.cpr.outputs.pull-request-number
+        if: steps.check_label.outputs.match == 'true' && steps.cpr.outputs.pull-request-number != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue comment ${{ github.event.issue.number }} --body "🚀 **Success!** I have created a Pull Request for your prompt: #${{ steps.cpr.outputs.pull-request-number }}"
 
       - name: Comment on Failure/No Changes
-        if: steps.check_label.outputs.match == 'true' && !steps.cpr.outputs.pull-request-number
+        if: steps.check_label.outputs.match == 'true' && steps.cpr.outputs.pull-request-number == ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
