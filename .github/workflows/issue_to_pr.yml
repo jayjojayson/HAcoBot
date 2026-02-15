@@ -6,7 +6,6 @@ on:
 
 jobs:
   process_prompt:
-    if: contains(github.event.issue.labels.*.name, 'new-prompt')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -14,29 +13,50 @@ jobs:
       issues: write
 
     steps:
+      - name: Debug Labels
+        run: echo "Labels: ${{ toJSON(github.event.issue.labels) }}"
+      
+      - name: Check for Label
+        id: check_label
+        run: |
+          if echo "${{ toJSON(github.event.issue.labels.*.name) }}" | grep -q "new-prompt"; then
+            echo "match=true" >> $GITHUB_OUTPUT
+            echo "Label found!"
+          else
+            echo "match=false" >> $GITHUB_OUTPUT
+            echo "Label 'new-prompt' not found. Skipping."
+          fi
+
       - name: Checkout code
+        if: steps.check_label.outputs.match == 'true'
         uses: actions/checkout@v4
 
       - name: Python Setup
+        if: steps.check_label.outputs.match == 'true'
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
       - name: Install dependencies
+        if: steps.check_label.outputs.match == 'true'
         run: pip install black
 
       - name: Process Issue
+        if: steps.check_label.outputs.match == 'true'
         env:
           GITHUB_EVENT_PATH: ${{ github.event_path }}
         run: python scripts/process_issue_prompt.py
 
       - name: Auto-Format (Black)
+        if: steps.check_label.outputs.match == 'true'
         run: black custom_components/prompts.py
 
       - name: Verify Syntax
+        if: steps.check_label.outputs.match == 'true'
         run: python scripts/validate_prompts.py
       
       - name: Create Pull Request
+        if: steps.check_label.outputs.match == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
