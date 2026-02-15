@@ -54,8 +54,15 @@ jobs:
       - name: Verify Syntax
         if: steps.check_label.outputs.match == 'true'
         run: python scripts/validate_prompts.py
-      
+
+      - name: Check Git Status
+        if: steps.check_label.outputs.match == 'true'
+        run: |
+          git status
+          git diff
+
       - name: Create Pull Request
+        id: cpr
         if: steps.check_label.outputs.match == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
@@ -72,3 +79,17 @@ jobs:
           branch: "prompt-update-${{ github.event.issue.number }}"
           delete-branch: true
           labels: "automated-pr"
+
+      - name: Comment on Issue
+        if: steps.check_label.outputs.match == 'true' && steps.cpr.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Success!** I have created a Pull Request for your prompt: #${{ steps.cpr.outputs.pull-request-number }}"
+
+      - name: Comment on Failure/No Changes
+        if: steps.check_label.outputs.match == 'true' && !steps.cpr.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "⚠️ **Processing finished but no PR was created.**\n\nPossible reasons:\n- No changes detected in `prompts.py`.\n- A PR already exists for this issue.\n\nPlease check the Action logs."
