@@ -48,3 +48,33 @@ FEATURE_SWITCHES = {
     "info": "Diagnose & Briefing",
     "notify": "Benachrichtigungen & Alerts",
 }
+
+# Mode-Profile für schnelle Rechtevergabe
+MODE_SAFE = "safe"
+MODE_STANDARD = "standard"
+MODE_ADMIN = "admin"
+
+MODE_PROFILES = {
+    # Nur ungefährliche Standardfunktionen
+    MODE_SAFE: {
+        "control",
+        "info",
+        "todo",
+        "calendar",
+    },
+    # Ausgewogener Alltag: inkl. Dashboard & Benachrichtigungen
+    MODE_STANDARD: {
+        "control",
+        "info",
+        "todo",
+        "calendar",
+        "dashboard",
+        "notify",
+        "scenes",
+        "scripts",
+    },
+    # Vollzugriff: alle Features
+    MODE_ADMIN: {
+        key for key in FEATURE_SWITCHES if not key.startswith("_cat_")
+    },
+}

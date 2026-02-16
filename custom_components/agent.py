@@ -151,6 +151,28 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
                 return False
         return True 
 
+    def _build_memory_context(self, include_scheduled: bool) -> str:
+        """Erzeugt den Memory-Block für den System-Prompt."""
+        if not self._memory_data:
+            return "Keine Einträge."
+
+        user_facts = self._memory_data.get("user_facts", {})
+        scheduled = self._memory_data.get("scheduled_tasks", []) if include_scheduled else []
+
+        mem_parts = []
+        if user_facts:
+            mem_parts.append("FAKTEN:")
+            mem_parts.extend([f"- {k}: {v}" for k, v in user_facts.items()])
+
+        if scheduled:
+            mem_parts.append("GEPLANTE AUFGABEN:")
+            mem_parts.extend([
+                f"- [{i}] {t['time']} {t.get('date', '')}: {t.get('task', t.get('prompt', 'Unbekannt'))}"
+                for i, t in enumerate(scheduled)
+            ])
+
+        return "\n".join(mem_parts) if mem_parts else "Keine Einträge."
+
     async def async_process(self, user_input: conversation.ConversationInput) -> conversation.ConversationResult:
         """Verarbeitet den Prompt."""
         
@@ -195,31 +217,9 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         if len(context_str) > 80000: context_str = context_str[:80000] + "... [truncated]"
 
         # Memory String
-        memory_str = "Keine Einträge."
-        if feat_proactive:
-            user_facts = self._memory_data.get("user_facts", {})
-            scheduled = self._memory_data.get("scheduled_tasks", [])
-            
-            mem_parts = []
-            if user_facts:
-                mem_parts.append("FAKTEN:")
-                mem_parts.extend([f"- {k}: {v}" for k, v in user_facts.items()])
-            
-            if scheduled:
-                mem_parts.append("GEPLANTE AUFGABEN:")
-                mem_parts.append("GEPLANTE AUFGABEN:")
-                mem_parts.extend([f"- [{i}] {t['time']} {t.get('date','')}: {t.get('task', t.get('prompt', 'Unbekannt'))}" for i, t in enumerate(scheduled)])
-                
-            if mem_parts:
-                memory_str = "\n".join(mem_parts)
+        memory_str = self._build_memory_context(include_scheduled=feat_proactive)
 
         # --- SYSTEM PROMPT (VERSION 4.0 - MODULAR STRUCTURE) ---
-        # Build memory context
-        memory_str = "Keine Einträge."
-        if feat_proactive:
-            user_facts = self._memory_data.get("user_facts", {})
-            if user_facts:
-                memory_str = "\n".join([f"- {k}: {v}" for k, v in user_facts.items()])
         
         # Build prompt from modular functions
         prompt_parts = []

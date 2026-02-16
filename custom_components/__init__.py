@@ -4,13 +4,23 @@ import os
 import shutil
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall, SupportsResponse
-from homeassistant.helpers import config_validation as cv, device_registry as dr, storage
+from homeassistant.helpers import config_validation as cv, device_registry as dr, entity_registry as er
 from homeassistant.components import conversation
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.util import ulid
 import voluptuous as vol
 
-from .const import DOMAIN, CONF_API_KEY, CONF_MODEL, DEFAULT_MODEL, FEATURE_SWITCHES
+from .const import (
+    DOMAIN,
+    CONF_API_KEY,
+    CONF_MODEL,
+    DEFAULT_MODEL,
+    FEATURE_SWITCHES,
+    MODE_PROFILES,
+    MODE_SAFE,
+    MODE_STANDARD,
+    MODE_ADMIN,
+)
 from .agent import HAcoBotAgent
 
 _LOGGER = logging.getLogger(__name__)
@@ -19,6 +29,69 @@ _LOGGER = logging.getLogger(__name__)
 PLATFORMS = ["switch"]
 # Name des Hauptordners im Config-Verzeichnis
 DATA_DIR = "HAcoBot"
+
+
+def _get_default_entry_id(hass: HomeAssistant) -> str | None:
+    """Liefert die erste verfügbare HAcoBot Entry-ID als Fallback."""
+    domain_data = hass.data.get(DOMAIN, {})
+    if not domain_data:
+        return None
+    return next(iter(domain_data.keys()))
+
+
+async def _async_apply_mode_profile(hass: HomeAssistant, mode: str, target_entry_id: str) -> dict:
+    """Setzt Feature-Switches gemäß Profil.
+
+    Wichtig: Die bestehenden Feature-Switches bleiben vollständig erhalten und
+    können anschließend weiterhin manuell geändert werden.
+    """
+    enabled_features = MODE_PROFILES[mode]
+    ent_reg = er.async_get(hass)
+
+    turned_on = 0
+    turned_off = 0
+
+    for feature_key in FEATURE_SWITCHES:
+        if feature_key.startswith("_cat_"):
+            continue
+
+        unique_id = f"{target_entry_id}_{feature_key}"
+        entity_id = ent_reg.async_get_entity_id("switch", DOMAIN, unique_id)
+        if not entity_id:
+            continue
+
+        should_enable = feature_key in enabled_features
+        service = "turn_on" if should_enable else "turn_off"
+        await hass.services.async_call(
+            "switch",
+            service,
+            {"entity_id": entity_id},
+            blocking=True,
+        )
+
+        if should_enable:
+            turned_on += 1
+        else:
+            turned_off += 1
+
+    return {
+        "mode": mode,
+        "entry_id": target_entry_id,
+        "turned_on": turned_on,
+        "turned_off": turned_off,
+        "note": "Profile ist angewendet. Feature-Switches bleiben manuell änderbar.",
+    }
+
+
+async def _handle_set_mode(call: ServiceCall, hass: HomeAssistant) -> dict:
+    """Aktiviert vordefinierte Feature-Profile (safe/standard/admin)."""
+    mode = call.data["mode"]
+    target_entry_id = call.data.get("entry_id") or _get_default_entry_id(hass)
+
+    if not target_entry_id:
+        raise vol.Invalid("Keine HAcoBot Instanz gefunden. Bitte entry_id angeben.")
+
+    return await _async_apply_mode_profile(hass, mode, target_entry_id)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Richtet die Integration über einen Config Entry ein."""
@@ -88,6 +161,23 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         schema=vol.Schema({vol.Required("prompt"): cv.string}),
         supports_response=SupportsResponse.ONLY
     )
+
+    if not hass.services.has_service(DOMAIN, "set_mode"):
+        async def handle_set_mode(call: ServiceCall) -> dict:
+            return await _handle_set_mode(call, hass)
+
+        hass.services.async_register(
+            DOMAIN,
+            "set_mode",
+            handle_set_mode,
+            schema=vol.Schema(
+                {
+                    vol.Required("mode"): vol.In([MODE_SAFE, MODE_STANDARD, MODE_ADMIN]),
+                    vol.Optional("entry_id"): cv.string,
+                }
+            ),
+            supports_response=SupportsResponse.ONLY,
+        )
 
     return True
 

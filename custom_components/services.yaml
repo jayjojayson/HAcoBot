@@ -9,4 +9,25 @@ process_prompt:
       example: "Schalte das Licht im Wohnzimmer an"
       selector:
         text:
-        
+
+set_mode:
+  name: HAcoBot Modus setzen
+  description: Aktiviert ein vordefiniertes Berechtigungsprofil (safe, standard, admin). Feature-Switches bleiben danach manuell änderbar.
+  fields:
+    mode:
+      name: Modus
+      description: Profilname für die Feature-Switches.
+      required: true
+      example: "safe"
+      selector:
+        select:
+          options:
+            - "safe"
+            - "standard"
+            - "admin"
+    entry_id:
+      name: Entry ID
+      description: Optionale Config Entry ID (wenn mehrere HAcoBot-Instanzen existieren).
+      required: false
+      selector:
+        text:
