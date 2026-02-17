@@ -109,6 +109,7 @@ def get_proactive_prompt() -> list[str]:
         "  - Häufig genutzte Geräte und Muster",
         "  - Problematische Automationen oder Entities",
         "  - Wichtige Zusammenhänge (z.B. 'Wenn Person X weg ist, dann...')",
+        "  - FORMULIERE System-Notizen als prägnanten, vollständigen Satz (dieser Satz ist dann der 'key' Parameter von manage_memory).",
         "  - Speichere System-Notizen in memory als 'system_notes' Array",
         "  - ACHTUNG: Prüfe VOR dem Speichern, ob Information bereits existiert -> KEINE DUPLIKATE!",
         "",
@@ -276,6 +277,25 @@ def get_automation_prompt() -> list[str]:
         "- Nutze Entitäten aus den AKTUELLEN ZUSTÄNDEN",
         "  - Nutze Inputs, Selects, Slider, etc. für Blueprints",
         "",
+        "- NUTZE die VORLAGE unter 'AUTOMATION-VORLAGE' für korrekte YAML-Struktur und Anführungszeichen.",
+        "",
+        "AUTOMATION-VORLAGE (YAML):",
+        "```yaml",
+        "# alias: 'Mein Beispiel Automation'",
+        "# description: 'Eine Beschreibung'",
+        "# mode: single",
+        "# trigger:",
+        "#   - id: 'my_trigger'",
+        "#     platform: state",
+        "#     entity_id: 'light.my_light'",
+        "#     to: 'on'",
+        "# condition: []",
+        "# action:",
+        "#   - service: light.turn_off",
+        "#     target:",
+        "#       entity_id: 'light.my_light'",
+        "```",
+        "",
         "LÖSCHEN:",
         "- Einzelne Automation / Blueprint: SOFORT löschen, keine Rückfrage",
         "- ALLE Automationen / Blueprints: ZWINGEND vorher bestätigen",
@@ -394,7 +414,7 @@ def get_tool_definitions() -> dict[str, dict]:
                     "properties": {
                         "action": {
                             "type": "string",
-                            "enum": ["save", "delete"]
+                            "enum": ["save", "delete", "save_note", "delete_note"]
                         },
                         "key": {"type": "string"},
                         "value": {"type": "string"}

@@ -71,7 +71,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             device_id=None,
             language="de",
             agent_id=entry.entry_id,
-            # NEU: satellite_id muss übergeben werden (None ist ok), sonst gibt es den __init__ Fehler
+            #  satellite_id muss übergeben werden (None ist ok), sonst gibt es den __init__ Fehler
             satellite_id=None 
         )
         result = await agent.async_process(fake_input)

@@ -119,8 +119,17 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
 
         self._memory_data = await self.hass.async_add_executor_job(load)
         
-        # Ensure scheduled_tasks exists
-        if "scheduled_tasks" not in self._memory_data:
+        # Ensure correct data types
+        if not isinstance(self._memory_data, dict):
+             self._memory_data = {}
+
+        if "user_facts" not in self._memory_data or not isinstance(self._memory_data["user_facts"], dict):
+            self._memory_data["user_facts"] = {}
+
+        if "system_notes" not in self._memory_data or not isinstance(self._memory_data["system_notes"], list):
+            self._memory_data["system_notes"] = []
+
+        if "scheduled_tasks" not in self._memory_data or not isinstance(self._memory_data["scheduled_tasks"], list):
             self._memory_data["scheduled_tasks"] = []
             
         # Start background check if not running
@@ -150,6 +159,33 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
             if state and state.state == "off":
                 return False
         return True 
+
+    def _build_memory_context(self, include_scheduled: bool) -> str:
+        """Erzeugt den Memory-Block für den System-Prompt."""
+        if not self._memory_data:
+            return "Keine Einträge."
+
+        user_facts = self._memory_data.get("user_facts", {})
+        scheduled = self._memory_data.get("scheduled_tasks", []) if include_scheduled else []
+
+        mem_parts = []
+        if user_facts:
+            mem_parts.append("FAKTEN:")
+            mem_parts.extend([f"- {k}: {v}" for k, v in user_facts.items()])
+
+        system_notes = self._memory_data.get("system_notes", [])
+        if system_notes:
+            mem_parts.append("VERHALTENSREGELN & NOTIZEN:")
+            mem_parts.extend([f"- {note}" for note in system_notes])
+
+        if scheduled:
+            mem_parts.append("GEPLANTE AUFGABEN:")
+            mem_parts.extend([
+                f"- [{i}] {t['time']} {t.get('date', '')}: {t.get('task', t.get('prompt', 'Unbekannt'))}"
+                for i, t in enumerate(scheduled)
+            ])
+
+        return "\n".join(mem_parts) if mem_parts else "Keine Einträge."
 
     async def async_process(self, user_input: conversation.ConversationInput) -> conversation.ConversationResult:
         """Verarbeitet den Prompt."""
@@ -195,31 +231,8 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         if len(context_str) > 80000: context_str = context_str[:80000] + "... [truncated]"
 
         # Memory String
-        memory_str = "Keine Einträge."
-        if feat_proactive:
-            user_facts = self._memory_data.get("user_facts", {})
-            scheduled = self._memory_data.get("scheduled_tasks", [])
-            
-            mem_parts = []
-            if user_facts:
-                mem_parts.append("FAKTEN:")
-                mem_parts.extend([f"- {k}: {v}" for k, v in user_facts.items()])
-            
-            if scheduled:
-                mem_parts.append("GEPLANTE AUFGABEN:")
-                mem_parts.append("GEPLANTE AUFGABEN:")
-                mem_parts.extend([f"- [{i}] {t['time']} {t.get('date','')}: {t.get('task', t.get('prompt', 'Unbekannt'))}" for i, t in enumerate(scheduled)])
-                
-            if mem_parts:
-                memory_str = "\n".join(mem_parts)
+        memory_str = self._build_memory_context(include_scheduled=feat_proactive)
 
-        # --- SYSTEM PROMPT (VERSION 4.0 - MODULAR STRUCTURE) ---
-        # Build memory context
-        memory_str = "Keine Einträge."
-        if feat_proactive:
-            user_facts = self._memory_data.get("user_facts", {})
-            if user_facts:
-                memory_str = "\n".join([f"- {k}: {v}" for k, v in user_facts.items()])
         
         # Build prompt from modular functions
         prompt_parts = []
@@ -310,7 +323,7 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         else:
             prompt_parts.append("HINWEIS: Automation & Blueprints sind DEAKTIVIERT.")
 
-        # Feature: SCRIPTS (NEU!)
+        # Feature: SCRIPTS
         if feat_scripts:
             prompt_parts.extend(get_scripts_prompt())
             tools.append(tool_defs["create_script"])
@@ -318,7 +331,7 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         else:
             prompt_parts.append("HINWEIS: Script Manager ist DEAKTIVIERT.")
 
-        # Feature: SCENES (NEU!)
+        # Feature: SCENES
         if feat_scenes:
             prompt_parts.extend(get_scenes_prompt())
             tools.append(tool_defs["create_scene"])
@@ -326,14 +339,14 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         else:
             prompt_parts.append("HINWEIS: Scene Manager ist DEAKTIVIERT.")
 
-        # Feature: NOTIFY (NEU!)
-        # Feature: NOTIFY (NEU!)
+        # Feature: NOTIFY 
+        # Feature: NOTIFY 
         if feat_notify:
             prompt_parts.extend(get_notify_prompt())
         else:
             prompt_parts.append("HINWEIS: Benachrichtigungen & Alerts sind DEAKTIVIERT.")
 
-        # Feature: SCHEDULING (NEU!)
+        # Feature: SCHEDULING 
         if feat_scheduling:
             prompt_parts.extend(get_scheduling_prompt())
             tools.append(tool_defs["add_scheduled_task"])
@@ -380,7 +393,30 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
 
                 for tool in tool_calls:
                     fname = tool.function.name
-                    args = json.loads(tool.function.arguments)
+                    args = {} 
+                    try:
+                        if tool.function.arguments:
+                            args = json.loads(tool.function.arguments)
+                        else:
+                            _LOGGER.warning(f"Tool {fname} called with empty arguments string.")
+                            res = "Fehler: Leere Argumente für Tool."
+                            messages.append({"role": "tool", "tool_call_id": tool.id, "content": str(res)})
+                            continue 
+                    except json.JSONDecodeError as e:
+                        _LOGGER.error(f"Fehler beim Parsen der Argumente für Tool {fname}: {e}")
+                        res = f"Fehler: Ungültige Argumente für Tool ({e})."
+                        messages.append({"role": "tool", "tool_call_id": tool.id, "content": str(res)})
+                        continue 
+                    except AttributeError: 
+                        _LOGGER.error(f"Fehler: Ungültiger Tool-Aufruf, 'function' oder 'arguments' fehlen.")
+                        res = "Fehler: Ungültiger Tool-Aufruf."
+                        messages.append({"role": "tool", "tool_call_id": tool.id, "content": str(res)})
+                        continue
+
+                    if not isinstance(args, dict):
+                        messages.append({"role": "tool", "tool_call_id": tool.id, "content": "Fehler: Argumente müssen ein JSON-Objekt sein."})
+                        continue
+
                     res = "Erfolg."
 
                     # --- ROUTING MIT HARTER SECURITY ---
@@ -492,6 +528,10 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
 
     # --- MEMORY FUNCTIONS ---
     async def _manage_memory(self, action, key, value=None):
+        # Validate memory structure
+        if "user_facts" not in self._memory_data or not isinstance(self._memory_data["user_facts"], dict):
+             self._memory_data["user_facts"] = {}
+
         if action == "save":
             self._memory_data["user_facts"][key] = value
             await self._save_memory_to_disk()
@@ -502,6 +542,25 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
                 await self._save_memory_to_disk()
                 return f"Gelöscht: {key}"
             return "Key nicht gefunden."
+        elif action == "save_note":
+            # Sicherstellen, dass die Liste existiert
+            if "system_notes" not in self._memory_data: self._memory_data["system_notes"] = []
+            
+            # Duplikate vermeiden
+            if key in self._memory_data["system_notes"]:
+                return f"Notiz existiert bereits: {key}"
+            
+            self._memory_data["system_notes"].append(key)
+            await self._save_memory_to_disk()
+            return f"Notiz gespeichert: {key}"
+            
+        elif action == "delete_note":
+            if "system_notes" in self._memory_data and key in self._memory_data["system_notes"]:
+                self._memory_data["system_notes"].remove(key)
+                await self._save_memory_to_disk()
+                return f"Notiz gelöscht: {key}"
+            return "Notiz nicht gefunden."
+            
         return "Unbekannte Aktion."
 
     async def _save_memory_to_disk(self):
