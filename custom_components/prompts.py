@@ -8,6 +8,7 @@ Sie ist bewusst ausgelagert, damit Pull Requests einfacher eingereicht werden k�
 # BASIS-PROMPTS (Immer aktiv)
 # =============================================================================
 
+
 def get_base_rules() -> list[str]:
     """Oberste Regeln für HAcoBot Verhalten."""
     return [
@@ -21,13 +22,13 @@ def get_base_rules() -> list[str]:
         "- NUTZE TOOLS DIREKT, ohne um Erlaubnis zu fragen.",
         "- FRAGE NUR NACH, wenn:",
         "  1) mehrere gleichwertige Interpretationen möglich sind",
-        "  2) eine irreversible MASSEN-AKTION betroffen ist (z. B. \"alle löschen\")",
+        '  2) eine irreversible MASSEN-AKTION betroffen ist (z. B. "alle löschen")',
         "  3) explizit vorgeschrieben (siehe Automation-Regeln)",
         "",
         "- Triff IMMER eine Entscheidung. Nicht zögern.",
         "- Nutze vorhandene Informationen, nicht den User.",
         "- TEST REGEL: Das ist ein Test.",
-        ""
+        "",
     ]
 
 
@@ -40,7 +41,7 @@ def get_working_mode() -> list[str]:
         "3. Plane intern die Schritte",
         "4. Führe notwendige Tools AUS",
         "5. Antworte nur mit dem Ergebnis (keine Erklärungen)",
-        ""
+        "",
     ]
 
 
@@ -58,7 +59,7 @@ def get_intent_priority() -> list[str]:
         "Wenn mehrere Intents erkannt werden:",
         "- Teile die Aufgabe logisch auf",
         "- Führe sie in dieser Reihenfolge aus",
-        ""
+        "",
     ]
 
 
@@ -71,7 +72,7 @@ def get_entity_search_rules() -> list[str]:
         "- Bevorzuge gleiche Domains (light -> light.*, sensor -> sensor.*)",
         "- Wähle IMMER nur eine Entity, außer mehrere sind ausdrücklich verlangt",
         "- Wenn mehrere passen: wähle die eindeutigste, NICHT nachfragen",
-        ""
+        "",
     ]
 
 
@@ -80,22 +81,23 @@ def get_response_format() -> list[str]:
     return [
         "ANTWORTFORMAT",
         "- Leichter Smalltalk ist ERLAUBT bei:",
-        "  - Begrüßungen (\"Hallo\", \"Guten Morgen\")",
-        "  - Dankesworte (\"Danke\", \"Vielen Dank\")",
-        "  - Fragen nach Identität (\"Wer bist du?\", \"Was kannst du?\")",
+        '  - Begrüßungen ("Hallo", "Guten Morgen")',
+        '  - Dankesworte ("Danke", "Vielen Dank")',
+        '  - Fragen nach Identität ("Wer bist du?", "Was kannst du?")',
         "- KEINE Emojis",
         "- Bei AUFGABEN: Direkt handeln, KEINE Erklärtexte",
         "- Entweder:",
         "  - Tool-Aufruf",
         "  - oder kurze Statusmeldung (1–2 Sätze)",
         "- Wenn ein Tool genutzt wurde: KEINE zusätzliche Erklärung",
-        ""
+        "",
     ]
 
 
 # =============================================================================
 # FEATURE-SPEZIFISCHE PROMPTS
 # =============================================================================
+
 
 def get_proactive_prompt() -> list[str]:
     """Prompt für proaktives Feature (Gedächtnis & Anomalien)."""
@@ -133,7 +135,7 @@ def get_proactive_prompt() -> list[str]:
         "- Nutze gesammelte System-Notizen für bessere Empfehlungen",
         "- Erkenne Muster und Zusammenhänge",
         "- Warne proaktiv bei erkannten Problemen",
-        ""
+        "",
     ]
 
 
@@ -146,7 +148,7 @@ def get_info_prompt() -> list[str]:
         "- Nutze 'check_system_health' und 'get_logs' bei Problemen.",
         "- Nutze 'get_entity_infos' für Attribute.",
         "- Am Ende von Briefings: Frage nach To-Do Liste.",
-        ""
+        "",
     ]
 
 
@@ -156,7 +158,7 @@ def get_updates_prompt() -> list[str]:
         "MODUS: UPDATES",
         "- Suche 'update.*' (on).",
         "- Installieren ohne Rückfrage.",
-        ""
+        "",
     ]
 
 
@@ -188,7 +190,7 @@ def get_todo_prompt() -> list[str]:
         "- Liste IMMER korrekt identifizieren",
         "- Bei Kontext ('auch hinzufügen', 'und Kakao') → aus vorherigem Request ableiten",
         "- Kein Smalltalk",
-        ""
+        "",
     ]
 
 
@@ -199,7 +201,7 @@ def get_calendar_prompt() -> list[str]:
         "- Nutze 'list_calendar_events'",
         "- Löschen via 'calendar.delete_event' mit UID",
         "- Keine Rückfragen bei Einzelterminen",
-        ""
+        "",
     ]
 
 
@@ -210,7 +212,7 @@ def get_control_prompt() -> list[str]:
         "- Nutze 'execute_service' für light, switch, cover, climate, etc.",
         "- Nutze passende Domains",
         "- Führe Aktionen direkt aus",
-        ""
+        "",
     ]
 
 
@@ -220,7 +222,7 @@ def get_system_prompt() -> list[str]:
         "MODUS: SYSTEM",
         "- Neustarts via 'homeassistant.restart'",
         "- Einzelaktionen ohne Rückfrage",
-        ""
+        "",
     ]
 
 
@@ -247,7 +249,7 @@ def get_dashboard_prompt() -> list[str]:
         "- Nutze Standard-Keys der jeweiligen Card",
         "- MINI-GRAPH-CARD: Nutze 'entities:' (Liste), Mehrere Sensoren in EINER Karte",
         "- Prüfe installierte Cards unter /config/www/community/",
-        ""
+        "",
     ]
 
 
@@ -299,7 +301,7 @@ def get_automation_prompt() -> list[str]:
         "LÖSCHEN:",
         "- Einzelne Automation / Blueprint: SOFORT löschen, keine Rückfrage",
         "- ALLE Automationen / Blueprints: ZWINGEND vorher bestätigen",
-        ""
+        "",
     ]
 
 
@@ -329,7 +331,7 @@ def get_scripts_prompt() -> list[str]:
         "LÖSCHEN:",
         "- Einzelnes Script: SOFORT löschen, keine Rückfrage",
         "- ALLE Scripts: ZWINGEND vorher bestätigen",
-        ""
+        "",
     ]
 
 
@@ -350,7 +352,7 @@ def get_scenes_prompt() -> list[str]:
         "LÖSCHEN:",
         "- Einzelne Scene: SOFORT löschen, keine Rückfrage",
         "- ALLE Scenes: ZWINGEND vorher bestätigen",
-        ""
+        "",
     ]
 
 
@@ -369,7 +371,7 @@ def get_notify_prompt() -> list[str]:
         "BEISPIELE:",
         "- Handy-Benachrichtigung: notify.mobile_app_iphone",
         "- Persistente Benachrichtigung: notify.persistent_notification",
-        ""
+        "",
     ]
 
 
@@ -388,7 +390,7 @@ def get_scheduling_prompt() -> list[str]:
         "- Aufgabe (prompt) muss präzise sein (z.B. 'Licht Küche aus')",
         "- Löschen via 'delete_scheduled_task' mit index",
         "- Auflisten via 'list_scheduled_tasks'",
-        ""
+        "",
     ]
 
 
@@ -396,9 +398,10 @@ def get_scheduling_prompt() -> list[str]:
 # TOOL-DEFINITIONEN
 # =============================================================================
 
+
 def get_tool_definitions() -> dict[str, dict]:
     """Gibt alle Tool-Definitionen zurück.
-    
+
     Returns:
         Dictionary mit Tool-Namen als Keys und Tool-Definitionen als Values.
     """
@@ -414,56 +417,40 @@ def get_tool_definitions() -> dict[str, dict]:
                     "properties": {
                         "action": {
                             "type": "string",
-                            "enum": ["save", "delete", "save_note", "delete_note"]
+                            "enum": ["save", "delete", "save_note", "delete_note"],
                         },
                         "key": {"type": "string"},
-                        "value": {"type": "string"}
+                        "value": {"type": "string"},
                     },
-                    "required": ["action", "key"]
-                }
-            }
+                    "required": ["action", "key"],
+                },
+            },
         },
-        
         "scan_for_trouble": {
             "type": "function",
             "function": {
                 "name": "scan_for_trouble",
                 "description": "Scannt System nach Problemen (unavailable entities, niedrige Batterien).",
-                "parameters": {
-                    "type": "object",
-                    "properties": {},
-                    "required": []
-                }
-            }
+                "parameters": {"type": "object", "properties": {}, "required": []},
+            },
         },
-        
         # --- INFO/DIAGNOSE TOOLS ---
         "check_system_health": {
             "type": "function",
             "function": {
                 "name": "check_system_health",
                 "description": "Analysiert System-Logs auf Fehler und Warnungen.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {},
-                    "required": []
-                }
-            }
+                "parameters": {"type": "object", "properties": {}, "required": []},
+            },
         },
-        
         "get_logs": {
             "type": "function",
             "function": {
                 "name": "get_logs",
                 "description": "Liest die letzten Log-Einträge.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {},
-                    "required": []
-                }
-            }
+                "parameters": {"type": "object", "properties": {}, "required": []},
+            },
         },
-        
         "get_entity_infos": {
             "type": "function",
             "function": {
@@ -472,16 +459,12 @@ def get_tool_definitions() -> dict[str, dict]:
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "entity_ids": {
-                            "type": "array",
-                            "items": {"type": "string"}
-                        }
+                        "entity_ids": {"type": "array", "items": {"type": "string"}}
                     },
-                    "required": ["entity_ids"]
-                }
-            }
+                    "required": ["entity_ids"],
+                },
+            },
         },
-        
         # --- TODO TOOLS ---
         "list_todo_items": {
             "type": "function",
@@ -490,14 +473,11 @@ def get_tool_definitions() -> dict[str, dict]:
                 "description": "Listet To-Do Einträge einer Liste auf.",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "entity_id": {"type": "string"}
-                    },
-                    "required": ["entity_id"]
-                }
-            }
+                    "properties": {"entity_id": {"type": "string"}},
+                    "required": ["entity_id"],
+                },
+            },
         },
-        
         # --- CALENDAR TOOLS ---
         "list_calendar_events": {
             "type": "function",
@@ -508,16 +488,12 @@ def get_tool_definitions() -> dict[str, dict]:
                     "type": "object",
                     "properties": {
                         "entity_id": {"type": "string"},
-                        "duration_hours": {
-                            "type": "integer",
-                            "default": 168
-                        }
+                        "duration_hours": {"type": "integer", "default": 168},
                     },
-                    "required": ["entity_id"]
-                }
-            }
+                    "required": ["entity_id"],
+                },
+            },
         },
-        
         # --- GENERIC SERVICE TOOL ---
         "execute_service": {
             "type": "function",
@@ -529,13 +505,12 @@ def get_tool_definitions() -> dict[str, dict]:
                     "properties": {
                         "domain": {"type": "string"},
                         "service": {"type": "string"},
-                        "service_data": {"type": "object"}
+                        "service_data": {"type": "object"},
                     },
-                    "required": ["domain", "service"]
-                }
-            }
+                    "required": ["domain", "service"],
+                },
+            },
         },
-        
         # --- DASHBOARD TOOLS ---
         "create_dashboard_file": {
             "type": "function",
@@ -546,26 +521,20 @@ def get_tool_definitions() -> dict[str, dict]:
                     "type": "object",
                     "properties": {
                         "filename": {"type": "string"},
-                        "yaml_content": {"type": "string"}
+                        "yaml_content": {"type": "string"},
                     },
-                    "required": ["filename", "yaml_content"]
-                }
-            }
+                    "required": ["filename", "yaml_content"],
+                },
+            },
         },
-        
         "list_custom_cards": {
             "type": "function",
             "function": {
                 "name": "list_custom_cards",
                 "description": "Listet installierte Custom Cards auf.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {},
-                    "required": []
-                }
-            }
+                "parameters": {"type": "object", "properties": {}, "required": []},
+            },
         },
-        
         # --- AUTOMATION TOOLS ---
         "create_automation": {
             "type": "function",
@@ -582,14 +551,13 @@ def get_tool_definitions() -> dict[str, dict]:
                         "action": {"type": "string"},
                         "mode": {
                             "type": "string",
-                            "enum": ["single", "restart", "queued", "parallel"]
-                        }
+                            "enum": ["single", "restart", "queued", "parallel"],
+                        },
                     },
-                    "required": ["alias", "description", "mode", "trigger", "action"]
-                }
-            }
+                    "required": ["alias", "description", "mode", "trigger", "action"],
+                },
+            },
         },
-        
         "delete_automation": {
             "type": "function",
             "function": {
@@ -597,14 +565,11 @@ def get_tool_definitions() -> dict[str, dict]:
                 "description": "Löscht eine Automation anhand des Alias.",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "alias": {"type": "string"}
-                    },
-                    "required": ["alias"]
-                }
-            }
+                    "properties": {"alias": {"type": "string"}},
+                    "required": ["alias"],
+                },
+            },
         },
-        
         "create_blueprint": {
             "type": "function",
             "function": {
@@ -614,13 +579,12 @@ def get_tool_definitions() -> dict[str, dict]:
                     "type": "object",
                     "properties": {
                         "filename": {"type": "string"},
-                        "yaml_content": {"type": "string"}
+                        "yaml_content": {"type": "string"},
                     },
-                    "required": ["filename", "yaml_content"]
-                }
-            }
+                    "required": ["filename", "yaml_content"],
+                },
+            },
         },
-        
         "delete_blueprint": {
             "type": "function",
             "function": {
@@ -628,27 +592,19 @@ def get_tool_definitions() -> dict[str, dict]:
                 "description": "Löscht einen Blueprint anhand des Dateinamens.",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "filename": {"type": "string"}
-                    },
-                    "required": ["filename"]
-                }
-            }
+                    "properties": {"filename": {"type": "string"}},
+                    "required": ["filename"],
+                },
+            },
         },
-        
         "create_backup": {
             "type": "function",
             "function": {
                 "name": "create_backup",
                 "description": "Erstellt ein System-Backup.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {},
-                    "required": []
-                }
-            }
+                "parameters": {"type": "object", "properties": {}, "required": []},
+            },
         },
-        
         # --- SCRIPT TOOLS ---
         "create_script": {
             "type": "function",
@@ -661,13 +617,12 @@ def get_tool_definitions() -> dict[str, dict]:
                         "name": {"type": "string"},
                         "alias": {"type": "string"},
                         "description": {"type": "string"},
-                        "sequence": {"type": "string"}
+                        "sequence": {"type": "string"},
                     },
-                    "required": ["name", "alias", "sequence"]
-                }
-            }
+                    "required": ["name", "alias", "sequence"],
+                },
+            },
         },
-        
         "delete_script": {
             "type": "function",
             "function": {
@@ -675,14 +630,11 @@ def get_tool_definitions() -> dict[str, dict]:
                 "description": "Löscht ein Script anhand des Namens.",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "name": {"type": "string"}
-                    },
-                    "required": ["name"]
-                }
-            }
+                    "properties": {"name": {"type": "string"}},
+                    "required": ["name"],
+                },
+            },
         },
-        
         # --- SCENE TOOLS ---
         "create_scene": {
             "type": "function",
@@ -693,13 +645,12 @@ def get_tool_definitions() -> dict[str, dict]:
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
-                        "entities": {"type": "string"}
+                        "entities": {"type": "string"},
                     },
-                    "required": ["name", "entities"]
-                }
-            }
+                    "required": ["name", "entities"],
+                },
+            },
         },
-        
         "delete_scene": {
             "type": "function",
             "function": {
@@ -707,14 +658,11 @@ def get_tool_definitions() -> dict[str, dict]:
                 "description": "Löscht eine Scene anhand des Namens.",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "name": {"type": "string"}
-                    },
-                    "required": ["name"]
-                }
-            }
+                    "properties": {"name": {"type": "string"}},
+                    "required": ["name"],
+                },
+            },
         },
-
         # --- SCHEDULING TOOLS ---
         "add_scheduled_task": {
             "type": "function",
@@ -725,15 +673,24 @@ def get_tool_definitions() -> dict[str, dict]:
                     "type": "object",
                     "properties": {
                         "time": {"type": "string", "description": "Uhrzeit HH:MM"},
-                        "date": {"type": "string", "description": "Datum YYYY-MM-DD (optional)"},
-                        "repeat": {"type": "string", "enum": ["daily", "none"], "description": "Wiederholung (z.B. bei 'jeden Tag', 'immer')"},
-                        "task": {"type": "string", "description": "Was soll getan werden?"}
+                        "date": {
+                            "type": "string",
+                            "description": "Datum YYYY-MM-DD (optional)",
+                        },
+                        "repeat": {
+                            "type": "string",
+                            "enum": ["daily", "none"],
+                            "description": "Wiederholung (z.B. bei 'jeden Tag', 'immer')",
+                        },
+                        "task": {
+                            "type": "string",
+                            "description": "Was soll getan werden?",
+                        },
                     },
-                    "required": ["time", "task"]
-                }
-            }
+                    "required": ["time", "task"],
+                },
+            },
         },
-
         "delete_scheduled_task": {
             "type": "function",
             "function": {
@@ -741,24 +698,17 @@ def get_tool_definitions() -> dict[str, dict]:
                 "description": "Löscht eine geplante Aufgabe anhand des Index.",
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        "index": {"type": "integer"}
-                    },
-                    "required": ["index"]
-                }
-            }
+                    "properties": {"index": {"type": "integer"}},
+                    "required": ["index"],
+                },
+            },
         },
-
         "list_scheduled_tasks": {
             "type": "function",
             "function": {
                 "name": "list_scheduled_tasks",
                 "description": "Listet alle geplanten Aufgaben auf.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {},
-                    "required": []
-                }
-            }
-        }
+                "parameters": {"type": "object", "properties": {}, "required": []},
+            },
+        },
     }
