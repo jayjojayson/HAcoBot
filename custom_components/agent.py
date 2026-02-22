@@ -1,8 +1,8 @@
-"""Die KI Logik für den HAcoBot."""
-import json
 import os
+import json
 import logging
-import datetime
+import shutil
+from datetime import datetime, timedelta
 from openai import AsyncOpenAI
 from homeassistant.core import HomeAssistant
 from homeassistant.components import conversation
@@ -65,6 +65,7 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         self.root_path = hass.config.path("HAcoBot")
         self.dashboard_path = os.path.join(self.root_path, "Dashboard-Cards")
         self.memory_file = os.path.join(self.root_path, "hacobot_memory.json")
+        self.soul_file = os.path.join(self.root_path, "hacobot_soul.json")
         self._store = storage.Store(hass, STORAGE_VERSION, STORAGE_KEY)
         self._memory_data = {} 
         self.remove_listener = None
@@ -116,8 +117,32 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
                     return {"user_facts": {}, "system_notes": []}
             else:
                 return {"user_facts": {}, "system_notes": [], "scheduled_tasks": []}
+            
+        def load_soul():
+            # Initialisiere Seele aus Template, falls nicht vorhanden
+            if not os.path.exists(self.soul_file):
+                template_path = os.path.join(os.path.dirname(self.root_path), "Z-neue-version", "hacobot_soul.json")
+                if os.path.exists(template_path):
+                    try:
+                        import shutil
+                        shutil.copy(template_path, self.soul_file)
+                        _LOGGER.info("Seele erfolgreich aus Template initialisiert.")
+                    except Exception as e:
+                        _LOGGER.error(f"Fehler bei Seele-Initialisierung: {e}")
+                else:
+                    # Fallback leere Seele
+                    return {"bot_identity": {"name": "HAcoBot", "principles": []}}
+
+            if os.path.exists(self.soul_file):
+                try:
+                    with open(self.soul_file, "r", encoding="utf-8") as f:
+                        return json.load(f)
+                except Exception as e:
+                    _LOGGER.error(f"Fehler beim Laden der Seele: {e}")
+            return {"bot_identity": {"name": "HAcoBot", "principles": []}}
 
         self._memory_data = await self.hass.async_add_executor_job(load)
+        self._soul_data = await self.hass.async_add_executor_job(load_soul)
         
         # Ensure correct data types
         if not isinstance(self._memory_data, dict):
@@ -135,7 +160,7 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         # Start background check if not running
         if not self.remove_listener:
              from homeassistant.helpers.event import async_track_time_interval
-             self.remove_listener = async_track_time_interval(self.hass, self._check_scheduled_tasks, datetime.timedelta(seconds=60))
+             self.remove_listener = async_track_time_interval(self.hass, self._check_scheduled_tasks, timedelta(seconds=60))
 
     async def _save_memory_to_disk(self):
         """Speichert das Gedächtnis."""
@@ -187,6 +212,33 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
 
         return "\n".join(mem_parts) if mem_parts else "Keine Einträge."
 
+    def _build_soul_context(self) -> str:
+        """Erzeugt den Identitäts-Block für den System-Prompt."""
+        if not self._soul_data:
+            return ""
+            
+        identity = self._soul_data.get("bot_identity", {})
+        parts = []
+        parts.append("DEINE IDENTITÄT (SEELE):")
+        parts.append(f"- Name: {identity.get('name', 'HAcoBot')}")
+        parts.append(f"- Rolle: {identity.get('role', 'Assistent')}")
+        
+        if principles := identity.get("principles"):
+            parts.append("- LEITPRINZIPIEN:")
+            parts.extend([f"  * {p}" for p in principles])
+            
+        if style := identity.get("communication_style"):
+            parts.append(f"- TONFALL: {style.get('tone', 'Hilfreich')}")
+            if avoid := style.get("avoid"):
+                parts.append(f"- VERMEIDE: {', '.join(avoid)}")
+                
+        if rules := identity.get("operational_rules"):
+            parts.append("- BETRIEBSREGELN:")
+            for k, v in rules.items():
+                parts.append(f"  * {k}: {v}")
+                
+        return "\n".join(parts)
+
     async def async_process(self, user_input: conversation.ConversationInput) -> conversation.ConversationResult:
         """Verarbeitet den Prompt."""
         
@@ -234,8 +286,14 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         memory_str = self._build_memory_context(include_scheduled=feat_proactive)
 
         
-        # Build prompt from modular functions
+        # Seele einbinden
         prompt_parts = []
+        soul_str = self._build_soul_context()
+        if soul_str:
+            prompt_parts.append(soul_str)
+            prompt_parts.append("")
+
+        # Build prompt from modular functions
         prompt_parts.extend(get_base_rules())
         prompt_parts.extend(get_working_mode())
         prompt_parts.extend(get_intent_priority())
@@ -369,7 +427,8 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
         # --- RE-ACT LOOP ---
         conversation_id = user_input.conversation_id
         if conversation_id not in self.history: self.history[conversation_id] = []
-        if len(self.history[conversation_id]) > 10: self.history[conversation_id] = self.history[conversation_id][-10:]
+        if len(self.history[conversation_id]) > 10:
+            self.history[conversation_id] = list(self.history[conversation_id])[-10:]
         current_user_message = {"role": "user", "content": user_input.text}
         messages = [system_prompt] + self.history[conversation_id] + [current_user_message]
 
@@ -561,6 +620,26 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
                 return f"Notiz gelöscht: {key}"
             return "Notiz nicht gefunden."
             
+        elif action == "update_soul":
+            # Bot darf seine Identität/Seele proaktiv anpassen
+            # value muss ein JSON-Objekt sein, das bot_identity überschreibt oder ergänzt
+            try:
+                if isinstance(value, str):
+                    new_data = json.loads(value)
+                else:
+                    new_data = value
+                    
+                # Sanity Check: Principles immer beibehalten
+                if "principles" not in new_data.get("bot_identity", {}):
+                    if "bot_identity" not in new_data: new_data["bot_identity"] = {}
+                    new_data["bot_identity"]["principles"] = self._soul_data["bot_identity"]["principles"]
+                
+                self._soul_data.update(new_data)
+                await self._save_soul_to_disk()
+                return "Seele erfolgreich aktualisiert."
+            except Exception as e:
+                return f"Fehler beim Seele-Update: {e}"
+            
         return "Unbekannte Aktion."
 
     async def _save_memory_to_disk(self):
@@ -573,6 +652,16 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
                     json.dump(self._memory_data, f, indent=2, ensure_ascii=False)
             except Exception as e:
                 _LOGGER.error(f"Fehler beim Speichern des Gedächtnisses: {e}")
+        await self.hass.async_add_executor_job(save)
+
+    async def _save_soul_to_disk(self):
+        """Speichert die Seele (Persönlichkeit)."""
+        def save():
+            try:
+                with open(self.soul_file, "w", encoding="utf-8") as f:
+                    json.dump(self._soul_data, f, indent=2, ensure_ascii=False)
+            except Exception as e:
+                _LOGGER.error(f"Fehler beim Speichern der Seele: {e}")
         await self.hass.async_add_executor_job(save)
 
     async def _scan_for_trouble(self):
@@ -680,7 +769,7 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
                 if repeat == "daily":
                     # Reschedule to tomorrow (relative to NOW, or relative to task time?)
                     # If we catch up a task from 3 days ago, we want it for tomorrow relative to TODAY.
-                    next_date = (now_local + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+                    next_date = (now_local + timedelta(days=1)).strftime("%Y-%m-%d")
                     t["date"] = next_date
                     keep.append(t)
                 else:
@@ -714,7 +803,7 @@ class HAcoBotAgent(conversation.AbstractConversationAgent):
 
     async def _list_calendar_events(self, eid, dur):
         try:
-            s = dt_util.now(); e = s + datetime.timedelta(hours=dur)
+            s = dt_util.now(); e = s + timedelta(hours=dur)
             r = await self.hass.services.async_call("calendar", "get_events", {"entity_id": eid, "start_date_time": s.isoformat(), "end_date_time": e.isoformat()}, blocking=True, return_response=True)
             if r and eid in r:
                 return "\n".join([f"- {ev['start']}: {ev['summary']} (UID: {ev.get('uid')})" for ev in r[eid].get('events', [])])
