@@ -1,3 +1,4 @@
+"""Die KI Logik für den HAcoBot."""
 import os
 import json
 import logging
